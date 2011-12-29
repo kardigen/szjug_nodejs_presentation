@@ -16,4 +16,5 @@ I want to extends tour point of view and have a lot of fun :)
 
 * Node.js for JavaScript like jvm for java
 * http://nodejs.org/ and http://npmjs.org/
-* 
+* $ node hello_node.js
+* node.js interactive mode $ node
