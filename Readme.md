@@ -10,7 +10,7 @@
 # Presentation goal
 
 This presentation is addressed to java people.
-I want to extends tour point of view and have a lot of fun :)
+I want to extends your point of view with good dose of fun :)
 
 # Node.js start
 
