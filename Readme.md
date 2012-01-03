@@ -18,9 +18,14 @@ I want to extends your point of view with good dose of fun :)
 * http://nodejs.org/ and http://npmjs.org/
 * $ node hello_node.js
 * node.js interactive mode $ node
-* js fast tutorial js_basics.js
+* js fast tutorial js_basics.js (http://www.howtocreate.co.uk/tutorials/javascript/)
 * node debuging https://github.com/joyent/node/wiki/using-eclipse-as-node-applications-debugger
 
 # express.js start
 
 * $ hello_express.js
+
+# express.js simple project
+
+1. configure basic project 
+		node_modules/express/bin/express -s .
