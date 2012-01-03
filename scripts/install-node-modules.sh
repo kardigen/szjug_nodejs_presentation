@@ -35,8 +35,8 @@ npm install async
 npm install request
 
 #Link socket io to static directory
-ln -sf ../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js static/js/
+#ln -sf ../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js static/js/
 
 #Link underscore to static directory
-ln -sf ../../node_modules/underscore/underscore.min.js static/js/
-ln -sf ../../node_modules/underscore.string/dist/underscore.string.min.js static/js/
+#ln -sf ../../node_modules/underscore/underscore.min.js static/js/
+#ln -sf ../../node_modules/underscore.string/dist/underscore.string.min.js static/js/
