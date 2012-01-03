@@ -27,5 +27,6 @@ I want to extends your point of view with good dose of fun :)
 
 # express.js simple project
 
-1. configure basic project 
-		node_modules/express/bin/express -s .
+1. configure basic project
+ 
+        node_modules/express/bin/express -s .
