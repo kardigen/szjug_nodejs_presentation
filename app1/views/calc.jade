@@ -1,0 +1,85 @@
+extends layout
+
+block append head
+  title Title
+  script(src='javascripts/bootstramp-1.4.0-twipsy.js')
+
+block content
+  script
+    $(function(){
+      $('#main-menu #calculation').addClass('active')
+      $("[rel=twipsy]").twipsy({ live: true})
+    })          
+  .container  
+    h2 Kalkulator
+    p dodaj i przelicz co tam sobie chcesz
+    .span13
+      .well
+        form.form-stacked
+          fieldset
+            legend Dodaj produkt
+            .clearfix
+              .span6.pull-left
+                label Produkt
+                .input
+                  input(type='text')#products.span5
+                  span.help-block Wpisz i wybierz nazwę produktu
+              .span3.pull-left
+                label Ilość
+                .input
+                  input(type='text')#amount.span2
+                  span.help-block Ilość np. 10 kg., 2 szt.
+              .span2.pull-left
+                #add-product-btn-wrapper.input
+                  a.btn.primary Dodaj
+                
+    .span13
+      h3 Tabela produktów
+      table#product-table.bordered-table.zebra-striped.fixed-table
+        tr
+          th Produkt
+          th.span2 Ilość
+          th.span2 Białko
+          th.span2
+            span(data-placement='above', rel='twipsy', title='Fenyloalanina') Phe
+          th.span2 
+            span(data-placement='above', rel='twipsy', title='Węglowodany') Węglo.
+          th.span2 
+            span(data-placement='above', rel='twipsy', title='Tłuszcze') Tłusz.
+          th.span2 Kalorie
+          th.span2 Usuń
+        for product in products
+          tr
+            td #{product.name}
+            td #{product.count}
+            td #{product.proteins}
+            td #{product.phe}
+            td #{product.carbonhydrates}
+            td #{product.fat}
+            td #{product.calories}
+            td 
+              a(href='#').btn.danger X
+          
+      #product-summary-table-container
+        table#product-summary-table.bordered-table.span12.pull-left.fixed-table
+          tr#product-summary-row
+            td.description Suma
+            td.span2#proteins-sum 
+            td.span2#pku-sum
+            td.span2#shugar-sum
+            td.span2#fat-sum
+            td.span2#calories-sum
+          tr#product-weight-summary-row
+            td.description
+              span Przelicz na masę ciała
+              input(type='number',max='400',min='0.1',step='0.1',value='60',le)#weight-input.span2
+              span kg.
+            td#proteins-sum 
+            td#pku-sum
+            td#sugar-sum
+            td#fat-sum
+            td#calories-sum
+  
+    .span13
+      .well
+        a.btn.primary Drukuj
