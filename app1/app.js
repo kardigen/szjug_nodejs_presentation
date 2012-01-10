@@ -45,9 +45,8 @@ app.get('/calculation', function(req, res){
     { name: 'Buła',count: '2 szt.', proteins: '23.2', phe: '100', carbonhydrates: '1000', fat: '10.4', calories: '200'},
     { name: 'Kasz',count: '1 kg.', proteins: '32', phe: '13', carbonhydrates: '312', fat: '50.2', calories: '300'}
   ]
-
-/* @see - pass data model to view */  
-  res.render('calc', { products: products })
+  
+  res.render('calc', { products: products } )
 });
 
 app.listen(3000);

@@ -51,7 +51,10 @@ I want to extends your point of view with good dose of fun :)
         init.sh
         node app.js
 
-## 3. see template changes
+## 3. JADE templates
+
+  JADE template system (https://github.com/visionmedia/jade)
+   
 * layout.jade: block and include keywords
-* calc.jade: extends, block append, for
+* calc.jade: extends, block append, for, if
 
