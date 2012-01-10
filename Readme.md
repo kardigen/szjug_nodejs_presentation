@@ -45,7 +45,7 @@ I want to extends your point of view with good dose of fun :)
         node_modules/express/bin/express -s .
         node app.js
 
-## 2. start simple project
+## 2. run simple project
 
         cd app1
         init.sh
