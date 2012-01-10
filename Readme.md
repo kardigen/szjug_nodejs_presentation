@@ -34,12 +34,24 @@ I want to extends your point of view with good dose of fun :)
 
 # express.js start
 
-* $ hello_express.js
+        node hello_express.js
 
 # express.js simple project
 
-1. configure basic project
- 
+## 1. configure basic project
+
         cd app0
         init.sh
         node_modules/express/bin/express -s .
+        node app.js
+
+## 2. start simple project
+
+        cd app1
+        init.sh
+        node app.js
+
+## 3. see template changes
+* layout.jade: block and include keywords
+* calc.jade: extends, block append, for
+
