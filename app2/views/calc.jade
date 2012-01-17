@@ -1,0 +1,122 @@
+extends layout
+
+block append head
+  title Title
+  script(src='javascripts/bootstramp-1.4.0-twipsy.js')
+
+block content
+  script
+    $(function(){
+      $('#main-menu #calculation').addClass('active')
+      $("[rel=twipsy]").twipsy({ live: true})
+      var data = "Auto Agatka Antek Argentyna Acostam Atom".split(" ")
+      $('#productBox')
+        .autocomplete({
+          source:'/products/names',
+          select: function( event, ui ) {
+            $( "#productBox" ).val( ui.item.name );
+            console.log(ui.item._id)
+            $( "#productBox" ).data('id', ui.item._id );
+            return false;
+          }
+        })
+        .data( "autocomplete" )
+          ._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+            .data( "item.autocomplete", item )
+              .append('<a>' + item.name+'</a>')
+              .appendTo( ul );
+           }
+      $('#addProductForm').submit( function(){
+        $('#addProductForm').attr('action','/calculation/add/' + $('#productBox').data('id'))
+        return true;
+      })
+    })
+
+  .container  
+    h2 Kalkulator
+    p dodaj i przelicz co tam sobie chcesz
+    .span13
+      .well
+        form(autocomplete='off',method='post')#addProductForm.form-stacked
+          fieldset
+            legend Dodaj produkt
+            .clearfix
+              .span6.pull-left
+                label Produkt
+                .input
+                  input(type='text',name='name')#productBox.span5
+                  span.help-block Wpisz i wybierz nazwę produktu
+              .span2.pull-left
+                label Ilość
+                .input
+                  input(type='text',name='amount')#amount.span1
+                  span.help-block np. 10,2
+              .span2.pull-left
+                label Jednostka
+                .input
+                  select(name='unit')#unit
+                    option(selected="selected") g
+                    option dg
+                    option kg
+                  span.help-block np. kg.
+              .span2.pull-left
+                #add-product-btn-wrapper.input
+                  button(type='submit')#addProductAction.btn.primary Dodaj
+                
+    .span13
+      h3 Tabela produktów
+      table#product-table.bordered-table.zebra-striped.fixed-table
+        tr
+          th Produkt
+          th.span2 Ilość
+          th.span2 Białko
+          th.span2
+            span(data-placement='above', rel='twipsy', title='Fenyloalanina') Phe
+          th.span2 
+            span(data-placement='above', rel='twipsy', title='Węglowodany') Węglo.
+          th.span2 
+            span(data-placement='above', rel='twipsy', title='Tłuszcze') Tłusz.
+          th.span2 Kalorie
+          th.span2 Usuń
+
+        //- @see - iterate over table data model
+        if (typeof(products) != 'undefined' && products != null)
+          for product in products
+            tr
+              td #{product.name}
+              td #{new Number(product.amount).toFixed(0)}
+              td #{new Number(product.proteins).toFixed(2)}
+              td #{new Number(product.phe).toFixed(2)}
+              td #{new Number(product.carbonhydrates).toFixed(2)}
+              td #{new Number(product.fat).toFixed(2)}
+              td #{new Number(product.calories).toFixed(2)}
+              td 
+                a(href='#').btn.danger X
+        else
+          tr
+            td(colspan='8',style='text-align: center;') Brak produktów w tabeli. Dodaj produkt.
+          
+      #product-summary-table-container
+        table#product-summary-table.bordered-table.span12.pull-left.fixed-table
+          tr#product-summary-row
+            td.description Suma
+            td.span2#proteins-sum 
+            td.span2#pku-sum
+            td.span2#shugar-sum
+            td.span2#fat-sum
+            td.span2#calories-sum
+          tr#product-weight-summary-row
+            td.description
+              span Przelicz na masę ciała
+              input(type='number',max='400',min='0.1',step='0.1',value='60',le)#weight-input.span2
+              span kg.
+            td#proteins-sum 
+            td#pku-sum
+            td#sugar-sum
+            td#fat-sum
+            td#calories-sum
+  
+    .span13
+      .well
+        a.btn.primary Drukuj
