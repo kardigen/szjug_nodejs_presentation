@@ -58,3 +58,12 @@ I want to extends your point of view with good dose of fun :)
 * layout.jade: block and include keywords
 * calc.jade: extends, block append, for, if
 
+## 4. simple project - next iteration
+
+        cd app1
+        init.sh
+        node app.js
+        
+* handlie HTTP POST method parameters
+* simple AJAX support
+* mongoDB support
