@@ -50,7 +50,35 @@ block content
           return false;
         })
         
-        var fillTable = function(data){
+        var fillSummaryTable = function(summary){
+          $('#proteins-sum').text(new Number(summary.proteins).toFixed(2))
+          $('#phe-sum').text(new Number(summary.phe).toFixed(2))
+          $('#carbonhydrates-sum').text(new Number(summary.carbonhydrates).toFixed(2))
+          $('#fat-sum').text(new Number(summary.fat).toFixed(2))
+          $('#calories-sum').text(new Number(summary.calories).toFixed(2))
+          
+          var weight = new Number($('#weight-input').val());
+          
+          $('#proteins-sum-weight').text((new Number(summary.proteins)/weight).toFixed(2))
+          $('#phe-sum-weight').text((new Number(summary.phe)/weight).toFixed(2))
+          $('#carbonhydrates-sum-weight').text((new Number(summary.carbonhydrates)/weight).toFixed(2))
+          $('#fat-sum-weight').text((new Number(summary.fat)/weight).toFixed(2))
+          $('#calories-sum-weight').text((new Number(summary.calories)/weight).toFixed(2))
+        }
+        
+        var summary = {}
+        
+        var resetSummary = function(){
+          summary = {
+            proteins: 0,
+            phe: 0,
+            carbonhydrates: 0,
+            fat: 0,
+            calories: 0
+          }
+        }
+        
+        var fillTableAndUpdateSummary = function(data){
           console.log('Data: ', data)
           
           //clear table
@@ -58,14 +86,22 @@ block content
           
           if(data && data.length){
             var table = $('table#product-table')
+            
             for( var idx in data ){
               var product = data[idx]
+              
+              summary.proteins        += product.proteins;
+              summary.phe             += product.phe;
+              summary.carbonhydrates  += product.carbonhydrates;
+              summary.fat             += product.fat;
+              summary.calories        += product.calories;
+              
               table.append(
               '<tr id="' + product.id + '">' +
                 '<td>' + product.name + '</td>'+
                 '<td>' + new Number(product.amount).toFixed(0) + '</td>'+ 
-                '<td>' + new Number(product.proteins).toFixed(2) + '</td>'+
                 '<td>' + new Number(product.phe).toFixed(2) + '</td>'+
+                '<td>' + new Number(product.proteins).toFixed(2) + '</td>'+
                 '<td>' + new Number(product.carbonhydrates).toFixed(2) + '</td>'+
                 '<td>' + new Number(product.fat).toFixed(2) + '</td>'+
                 '<td>' + new Number(product.calories).toFixed(2) + '</td>'+
@@ -78,17 +114,30 @@ block content
               console.log('delete item: ',productId)
               socket.emit('/calculation/delete',productId)
             })
+            
           } else {
             $('#product-table').append(
               '<tr><td colspan="8" style="text-align: center;">Brak produktów w tabeli. Dodaj produkt.</td></tr>')
           }
         }
         
-        fillTable([]);
+        resetSummary()
+        fillTableAndUpdateSummary([]);
+        fillSummaryTable(summary);
         
         socket.on('/calculation/table', function(data){
-          fillTable(data);
+          resetSummary()
+          fillTableAndUpdateSummary(data);
+          fillSummaryTable(summary);
         })
+        
+        $('#weight-input')
+          .change(function(){
+            fillSummaryTable(summary);
+          })
+          .click(function(){
+            fillSummaryTable(summary);
+          })
         
       });
     })
@@ -111,7 +160,7 @@ block content
                 label Ilość
                 .input
                   input(type='text',name='amount')#amount.span1
-                  span.help-block np. 10,2
+                  span.help-block np. 10.2
               .span2.pull-left
                 label Jednostka
                 .input
@@ -144,9 +193,9 @@ block content
         table#product-summary-table.bordered-table.span12.pull-left.fixed-table
           tr#product-summary-row
             td.description Suma
+            td.span2#phe-sum
             td.span2#proteins-sum 
-            td.span2#pku-sum
-            td.span2#shugar-sum
+            td.span2#carbonhydrates-sum
             td.span2#fat-sum
             td.span2#calories-sum
           tr#product-weight-summary-row
@@ -154,11 +203,11 @@ block content
               span Przelicz na masę ciała
               input(type='number',max='400',min='0.1',step='0.1',value='60',le)#weight-input.span2
               span kg.
-            td#proteins-sum 
-            td#pku-sum
-            td#sugar-sum
-            td#fat-sum
-            td#calories-sum
+            td#phe-sum-weight
+            td#proteins-sum-weight
+            td#carbonhydrates-sum-weight
+            td#fat-sum-weight
+            td#calories-sum-weight
   
     .span13
       .well
