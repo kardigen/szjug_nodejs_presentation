@@ -14,7 +14,7 @@ npm install jade
 npm install mongoose
 
 # Install Socket.io (Realtime apps in every browser and mobile device)
-npm install socket.io
+npm install socket.io express
 
 #Install log4js (A logger framework for work with nodejs)
 npm install log4js
@@ -33,10 +33,3 @@ npm install async
 
 #Install Simplified HTTP request method
 npm install request
-
-#Link socket io to static directory
-#ln -sf ../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js static/js/
-
-#Link underscore to static directory
-#ln -sf ../../node_modules/underscore/underscore.min.js static/js/
-#ln -sf ../../node_modules/underscore.string/dist/underscore.string.min.js static/js/
