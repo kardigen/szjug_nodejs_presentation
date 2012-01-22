@@ -38,14 +38,14 @@ I want to extends your point of view with good dose of fun :)
 
 # express.js simple project
 
-## 1. configure basic project
+## 1. configure basic project - app0
 
         cd app0
         init.sh
         node_modules/express/bin/express -s .
         node app.js
 
-## 2. run simple project
+## 2. run simple project - app1
 
         cd app1
         init.sh
@@ -58,9 +58,9 @@ I want to extends your point of view with good dose of fun :)
 * layout.jade: block and include keywords
 * calc.jade: extends, block append, for, if
 
-## 4. simple project - next iteration
+## 4. simple project - app2
 
-        cd app1
+        cd app2
         init.sh
         node app.js
         
@@ -68,4 +68,10 @@ I want to extends your point of view with good dose of fun :)
 * simple AJAX support
 * mongoDB support
 
+## 5. simple project - app3
 
+        cd app3
+        init.sh
+        node app.js
+        
+* socket.io support
