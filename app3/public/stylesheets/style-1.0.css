@@ -1,4 +1,13 @@
 .fixed-table{ table-layout: fixed;}
+form input.error , form textarea.error {
+  color: #b94a48;
+  border-color: #ee5f5b;
+}
+form input.error+.help-block , form textarea.error+.help-block {
+  color: #b94a48;
+  border-color: #ee5f5b;
+}
+
 #add-product-btn-wrapper{padding-top: 20px;}
 #product-table td{vertical-align:middle;}
 #product-summary-table-container{overflow: auto;}

@@ -173,10 +173,6 @@ io.sockets.on('connection', function(socket){
             carbonhydrates: item.carbonhydrates *amountInGrams/100
           }
           
-          console.log(data)
-          
-          //TODO update
-          
           productsSet.push(data);
         }
         
@@ -197,6 +193,11 @@ io.sockets.on('connection', function(socket){
       socket.set('productsSet',productsSet)
       socket.emit('/calculation/table',productsSet)
     })
+  })
+  
+  socket.on('/calculation/clear',function(){
+    socket.set('productsSet',[])
+    socket.emit('/calculation/table',[])
   })
 })
 

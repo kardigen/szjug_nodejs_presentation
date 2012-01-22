@@ -37,14 +37,36 @@ block content
              }
                 
         $('#addProductForm').submit( function(){
+        
           var recipe = {
             id:     $('#productBox').data('id'),
             amount: $('#amount').val(),
             unit:   $('#unit').val()
           }
+          
+          var error = false;
+          if(!recipe.id) {
+            $('#productBox').addClass('error')
+            error = true;
+          } else {
+            $('#productBox').removeClass('error')
+          }
+          
+          if(recipe.amount <= 0) {
+            $('#amount').addClass('error')
+            error = true;
+          } else {
+            $('#amount').removeClass('error')
+          }
+          
+          if(error) {
+            return false;
+          }
+          
           socket.emit('/calculation/add', recipe);
           
-          $('#productBox').val('')
+          //clear fields
+          $('#productBox').val('').data('id',null)
           $('#amount').val('')
           $('#unit').val('g')
           return false;
@@ -139,6 +161,9 @@ block content
             fillSummaryTable(summary);
           })
         
+        $('#clearTableAction').click(function(){
+          socket.emit('/calculation/clear')
+        })
       });
     })
 
@@ -212,3 +237,7 @@ block content
     .span13
       .well
         a.btn.primary Drukuj
+        button#clearTableAction.btn.danger.pull-right Wyczyść
+        
+        
+    
