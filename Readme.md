@@ -72,4 +72,4 @@ JADE template system (https://github.com/visionmedia/jade)
         init.sh
         node app.js
         
-* socket.io support
+* socket.io support (http://http://socket.io)
