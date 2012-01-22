@@ -145,45 +145,58 @@ io.sockets.on('connection', function(socket){
     products.findById(recipe.id,function(err,item){
       
     // get from session
+      socket.get('productsSet',function(err,productsSet){
+        
+        if(!productsSet) {
+          productsSet = [];
+        }
+        
+        if(item) {
+          var amountInGrams = 0;
+          switch (recipe.unit){
+            case 'g': amountInGrams = recipe.amount;
+            break;
+            case 'dg': amountInGrams = recipe.amount * 10;
+            break;
+            case 'kg': amountInGrams = recipe.amount * 1000;
+            break;
+          }
+          
+          var data = {
+            id: item._id,
+            amount: amountInGrams,
+            name: item.name,
+            phe: item.phe*amountInGrams/100,
+            proteins: item.proteins*amountInGrams/100,
+            calories: item.calories*amountInGrams/100,
+            fat: item.fat *amountInGrams/100,
+            carbonhydrates: item.carbonhydrates *amountInGrams/100
+          }
+          
+          console.log(data)
+          
+          //TODO update
+          
+          productsSet.push(data);
+        }
+        
+        // set into session
+        socket.set('productsSet',productsSet)
+        socket.emit('/calculation/table',productsSet)
+      })
+    })
+  })
+  
+  socket.on('/calculation/delete',function( productId){
+    console.log('Delete item: ', productId)
     socket.get('productsSet',function(err,productsSet){
+      productsSet = _.reject(productsSet,function(item){
+        return item.id == productId;
+      })
       
-      if(!productsSet) {
-        productsSet = [];
-      }
-      
-      if(item) {
-        var amountInGrams = 0;
-        switch (recipe.unit){
-          case 'g': amountInGrams = recipe.amount;
-          break;
-          case 'dg': amountInGrams = recipe.amount * 10;
-          break;
-          case 'kg': amountInGrams = recipe.amount * 1000;
-          break;
-        }
-        
-        var data = {
-          amount: amountInGrams,
-          name: item.name,
-          phe: item.phe*amountInGrams/100,
-          proteins: item.proteins*amountInGrams/100,
-          calories: item.calories*amountInGrams/100,
-          fat: item.fat *amountInGrams/100,
-          carbonhydrates: item.carbonhydrates *amountInGrams/100
-        }
-        
-        console.log(data)
-        
-        //TODO update
-        
-        productsSet.push(data);
-      }
-      
-      // set into session
       socket.set('productsSet',productsSet)
       socket.emit('/calculation/table',productsSet)
     })
-  })
   })
 })
 

@@ -61,7 +61,7 @@ block content
             for( var idx in data ){
               var product = data[idx]
               table.append(
-              '<tr>' +
+              '<tr id="' + product.id + '">' +
                 '<td>' + product.name + '</td>'+
                 '<td>' + new Number(product.amount).toFixed(0) + '</td>'+ 
                 '<td>' + new Number(product.proteins).toFixed(2) + '</td>'+
@@ -69,9 +69,15 @@ block content
                 '<td>' + new Number(product.carbonhydrates).toFixed(2) + '</td>'+
                 '<td>' + new Number(product.fat).toFixed(2) + '</td>'+
                 '<td>' + new Number(product.calories).toFixed(2) + '</td>'+
-                '<td> <a href="#" class="btn danger">X</a> </td>' +
+                '<td> <button class="btn danger productDeleteAction">X</button> </td>' +
               '</tr>')
             }
+            
+            $('.productDeleteAction').one('click',function(event){
+              var productId = event.target.parentElement.parentElement.id;
+              console.log('delete item: ',productId)
+              socket.emit('/calculation/delete',productId)
+            })
           } else {
             $('#product-table').append(
               '<tr><td colspan="8" style="text-align: center;">Brak produktów w tabeli. Dodaj produkt.</td></tr>')
@@ -83,6 +89,7 @@ block content
         socket.on('/calculation/table', function(data){
           fillTable(data);
         })
+        
       });
     })
 
