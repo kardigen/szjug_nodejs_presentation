@@ -51,9 +51,7 @@ I want to extends your point of view with good dose of fun :)
         init.sh
         node app.js
 
-### JADE templates
-
-  JADE template system (https://github.com/visionmedia/jade)
+JADE template system (https://github.com/visionmedia/jade)
    
 * layout.jade: block and include keywords
 * calc.jade: extends, block append, for, if
