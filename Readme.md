@@ -51,14 +51,14 @@ I want to extends your point of view with good dose of fun :)
         init.sh
         node app.js
 
-## 3. JADE templates
+### JADE templates
 
   JADE template system (https://github.com/visionmedia/jade)
    
 * layout.jade: block and include keywords
 * calc.jade: extends, block append, for, if
 
-## 4. simple project - app2
+## 3. simple project - app2
 
         cd app2
         init.sh
@@ -68,7 +68,7 @@ I want to extends your point of view with good dose of fun :)
 * simple AJAX support
 * mongoDB support
 
-## 5. simple project - app3
+## 4. simple project - app3
 
         cd app3
         init.sh
