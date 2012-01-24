@@ -1,0 +1,243 @@
+extends layout
+
+block append head
+  title Title
+  script(src='javascripts/bootstramp-1.4.0-twipsy.js')
+  script(src='javascripts/socket.io.min.js')
+
+block content
+  script
+    $(function(){
+      $('#main-menu #calculation').addClass('active')
+      $("[rel=twipsy]").twipsy({ live: true})
+      
+      var socket = io.connect();
+      socket.on('connect', function () {
+        $('#productBox')
+          .autocomplete({
+            source:function(req,res){
+              socket.emit('/products/names',req.term, function (data) {
+                console.log(data);
+                res(data)
+              });
+            },
+            select: function( event, ui ) {
+              $( "#productBox" ).val( ui.item.name );
+              console.log(ui.item._id)
+              $( "#productBox" ).data('id', ui.item._id );
+              return false;
+            }
+          })
+          .data( "autocomplete" )
+            ._renderItem = function( ul, item ) {
+              return $( "<li></li>" )
+              .data( "item.autocomplete", item )
+                .append('<a>' + item.name+'</a>')
+                .appendTo( ul );
+             }
+                
+        $('#addProductForm').submit( function(){
+        
+          var recipe = {
+            id:     $('#productBox').data('id'),
+            amount: $('#amount').val(),
+            unit:   $('#unit').val()
+          }
+          
+          var error = false;
+          if(!recipe.id) {
+            $('#productBox').addClass('error')
+            error = true;
+          } else {
+            $('#productBox').removeClass('error')
+          }
+          
+          if(recipe.amount <= 0) {
+            $('#amount').addClass('error')
+            error = true;
+          } else {
+            $('#amount').removeClass('error')
+          }
+          
+          if(error) {
+            return false;
+          }
+          
+          socket.emit('/calculation/add', recipe);
+          
+          //clear fields
+          $('#productBox').val('').data('id',null)
+          $('#amount').val('')
+          $('#unit').val('g')
+          return false;
+        })
+        
+        var fillSummaryTable = function(summary){
+          $('#proteins-sum').text(new Number(summary.proteins).toFixed(2))
+          $('#phe-sum').text(new Number(summary.phe).toFixed(2))
+          $('#carbonhydrates-sum').text(new Number(summary.carbonhydrates).toFixed(2))
+          $('#fat-sum').text(new Number(summary.fat).toFixed(2))
+          $('#calories-sum').text(new Number(summary.calories).toFixed(2))
+          
+          var weight = new Number($('#weight-input').val());
+          
+          $('#proteins-sum-weight').text((new Number(summary.proteins)/weight).toFixed(2))
+          $('#phe-sum-weight').text((new Number(summary.phe)/weight).toFixed(2))
+          $('#carbonhydrates-sum-weight').text((new Number(summary.carbonhydrates)/weight).toFixed(2))
+          $('#fat-sum-weight').text((new Number(summary.fat)/weight).toFixed(2))
+          $('#calories-sum-weight').text((new Number(summary.calories)/weight).toFixed(2))
+        }
+        
+        var summary = {}
+        
+        var resetSummary = function(){
+          summary = {
+            proteins: 0,
+            phe: 0,
+            carbonhydrates: 0,
+            fat: 0,
+            calories: 0
+          }
+        }
+        
+        var fillTableAndUpdateSummary = function(data){
+          console.log('Data: ', data)
+          
+          //clear table
+          $('table#product-table tr:has(td)').remove()
+          
+          if(data && data.length){
+            var table = $('table#product-table')
+            
+            for( var idx in data ){
+              var product = data[idx]
+              
+              summary.proteins        += product.proteins;
+              summary.phe             += product.phe;
+              summary.carbonhydrates  += product.carbonhydrates;
+              summary.fat             += product.fat;
+              summary.calories        += product.calories;
+              
+              table.append(
+              '<tr id="' + product.id + '">' +
+                '<td>' + product.name + '</td>'+
+                '<td>' + new Number(product.amount).toFixed(0) + '</td>'+ 
+                '<td>' + new Number(product.phe).toFixed(2) + '</td>'+
+                '<td>' + new Number(product.proteins).toFixed(2) + '</td>'+
+                '<td>' + new Number(product.carbonhydrates).toFixed(2) + '</td>'+
+                '<td>' + new Number(product.fat).toFixed(2) + '</td>'+
+                '<td>' + new Number(product.calories).toFixed(2) + '</td>'+
+                '<td> <button class="btn danger productDeleteAction">X</button> </td>' +
+              '</tr>')
+            }
+            
+            $('.productDeleteAction').one('click',function(event){
+              var productId = event.target.parentElement.parentElement.id;
+              console.log('delete item: ',productId)
+              socket.emit('/calculation/delete',productId)
+            })
+            
+          } else {
+            $('#product-table').append(
+              '<tr><td colspan="8" style="text-align: center;">Brak produktów w tabeli. Dodaj produkt.</td></tr>')
+          }
+        }
+        
+        resetSummary()
+        fillTableAndUpdateSummary([]);
+        fillSummaryTable(summary);
+        
+        socket.on('/calculation/table', function(data){
+          resetSummary()
+          fillTableAndUpdateSummary(data);
+          fillSummaryTable(summary);
+        })
+        
+        $('#weight-input')
+          .change(function(){
+            fillSummaryTable(summary);
+          })
+          .click(function(){
+            fillSummaryTable(summary);
+          })
+        
+        $('#clearTableAction').click(function(){
+          socket.emit('/calculation/clear')
+        })
+      });
+    })
+
+  .container  
+    h2 Kalkulator
+    p dodaj i przelicz co tam sobie chcesz
+    .span13
+      .well
+        form(autocomplete='off',method='post')#addProductForm.form-stacked
+          fieldset
+            legend Dodaj produkt
+            .clearfix
+              .span6.pull-left
+                label Produkt
+                .input
+                  input(type='text',name='name')#productBox.span5
+                  span.help-block Wpisz i wybierz nazwę produktu
+              .span2.pull-left
+                label Ilość
+                .input
+                  input(type='text',name='amount')#amount.span1
+                  span.help-block np. 10.2
+              .span2.pull-left
+                label Jednostka
+                .input
+                  select(name='unit')#unit
+                    option(selected="selected") g
+                    option dg
+                    option kg
+                  span.help-block np. kg.
+              .span2.pull-left
+                #add-product-btn-wrapper.input
+                  button(type='submit')#addProductAction.btn.primary Dodaj
+                
+    .span13
+      h3 Tabela produktów
+      table#product-table.bordered-table.zebra-striped.fixed-table
+        tr
+          th Produkt
+          th.span2 Ilość(g)
+          th.span2
+            span(data-placement='above', rel='twipsy', title='Fenyloalanina') Phe
+          th.span2 Białko
+          th.span2 
+            span(data-placement='above', rel='twipsy', title='Węglowodany') Węglo.
+          th.span2 
+            span(data-placement='above', rel='twipsy', title='Tłuszcze') Tłusz.
+          th.span2 Kalorie
+          th.span2 Usuń
+
+      #product-summary-table-container
+        table#product-summary-table.bordered-table.span12.pull-left.fixed-table
+          tr#product-summary-row
+            td.description Suma
+            td.span2#phe-sum
+            td.span2#proteins-sum 
+            td.span2#carbonhydrates-sum
+            td.span2#fat-sum
+            td.span2#calories-sum
+          tr#product-weight-summary-row
+            td.description
+              span Przelicz na masę ciała
+              input(type='number',max='400',min='0.1',step='0.1',value='60',le)#weight-input.span2
+              span kg.
+            td#phe-sum-weight
+            td#proteins-sum-weight
+            td#carbonhydrates-sum-weight
+            td#fat-sum-weight
+            td#calories-sum-weight
+  
+    .span13
+      .well
+        a.btn.primary Drukuj
+        button#clearTableAction.btn.danger.pull-right Wyczyść
+        
+        
+    

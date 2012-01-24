@@ -1,0 +1,18 @@
+.fixed-table{ table-layout: fixed;}
+form input.error , form textarea.error {
+  color: #b94a48;
+  border-color: #ee5f5b;
+}
+form input.error+.help-block , form textarea.error+.help-block {
+  color: #b94a48;
+  border-color: #ee5f5b;
+}
+
+#add-product-btn-wrapper{padding-top: 20px;}
+#product-table td{vertical-align:middle;}
+#product-summary-table-container{overflow: auto;}
+#product-summary-table .description{font-weight: bold;}/* text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);}*/
+#product-summary-table{background-color: whiteSmoke; }
+#product-summary-table td{vertical-align:middle;}
+#weight-input{margin-left: 5px; margin-right: 5px;}
+#unit {width: 60px;}
