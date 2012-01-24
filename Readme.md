@@ -3,7 +3,7 @@
 * node.js start
 * express.js start
 * express.js simple project
-* tests?
+* tests
 * troubleshooting
 * summary
 
@@ -74,12 +74,18 @@ JADE template system (https://github.com/visionmedia/jade)
         
 * socket.io support (http://http://socket.io)
 
-## 4. simple project - app4
+## 5. simple project - app4
 
         cd app4
         init.sh
         node app.js
-        
+
+* Code refactoring        
 * Vows test (http://vowsjs.org/)
 
-        ./node_modules/vows/bin/vows --spec tests/*
+        ./node_modules/vows/bin/vows --spec tests/products_test.js
+        
+* Mocha test (http://visionmedia.github.com/mocha/)
+
+         ./node_modules/mocha/bin/mocha --reporter spec tests/products_test.mocha.js
+
