@@ -73,3 +73,13 @@ JADE template system (https://github.com/visionmedia/jade)
         node app.js
         
 * socket.io support (http://http://socket.io)
+
+## 4. simple project - app4
+
+        cd app4
+        init.sh
+        node app.js
+        
+* Vows test (http://vowsjs.org/)
+
+        ./node_modules/vows/bin/vows --spec tests/*
