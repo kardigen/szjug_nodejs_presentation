@@ -33,3 +33,6 @@ npm install async
 
 #Install Simplified HTTP request method
 npm install request
+
+#Install vows test framework
+npm install vows
