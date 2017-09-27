@@ -85,7 +85,7 @@ JADE template system (https://github.com/visionmedia/jade)
 
         ./node_modules/vows/bin/vows --spec tests/products_test.js
         
-* Mocha test (http://visionmedia.github.com/mocha/)
+* Mocha test (https://mochajs.org/)
 
          ./node_modules/mocha/bin/mocha --reporter spec tests/products_test.mocha.js
 
